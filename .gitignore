@@ -1,0 +1,20 @@
+# Desktop Services Store on macOS
+.DS_Store
+
+# Python cache directories
+__pycache__/
+
+# CLI installer files
+*.egg-info
+
+# Jetbrains project files
+.idea/
+
+# Environment variables
+.env*
+
+# Mypy cache files
+.mypy_cache/
+
+# Pytest cache files
+.pytest_cache/
