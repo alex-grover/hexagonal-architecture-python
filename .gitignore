@@ -10,6 +10,9 @@ __pycache__/
 # Jetbrains project files
 .idea/
 
+# VSCode project files
+.vscode/
+
 # Environment variables
 .env*
 
