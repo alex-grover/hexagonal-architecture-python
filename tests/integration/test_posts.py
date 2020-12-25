@@ -8,6 +8,7 @@ from hex.adapters.database.postgres import posts
 from hex.application import create_application
 from hex.domain.post import Post
 from tests.utils.dates import datetime_to_rfc822_string
+from datetime import datetime
 
 
 @pytest.fixture
@@ -51,3 +52,12 @@ class TestPosts:
         assert response.json['body'] == 'ccc'
         assert response.json['createdAt'] == datetime_to_rfc822_string(post.created_at)
         assert response.json['updatedAt'] == datetime_to_rfc822_string(post.updated_at)
+
+    def test_post_detail_not_found(self, client: FlaskClient, post: Post) -> None:
+        response = client.get(f'/api/posts/100')
+        assert response.status_code == 404
+        assert response.json['status'] == 404
+        assert response.json['title'] == 'Post Not Found'
+        assert response.json['timestamp'] == datetime_to_rfc822_string(datetime.now())
+        assert response.json['path'] == '/api/posts/100'
+        assert response.json['detail'] == 'A post with the id 100 does not exist'

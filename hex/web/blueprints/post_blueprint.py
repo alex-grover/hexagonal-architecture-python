@@ -1,8 +1,9 @@
 import inject
 from flask import Blueprint, jsonify, Response, request
 
-from hex.domain.actions.get_post import GetPost
+from hex.domain.actions.get_post import GetPost, PostNotFound
 from hex.domain.actions.search_posts import SearchPosts
+from hex.web.responses import ErrorResponse
 
 
 @inject.autoparams()
@@ -27,5 +28,12 @@ def create_post_blueprint(search_posts: SearchPosts, get_post: GetPost) -> Bluep
     def post_detail(post_id: int) -> Response:
         post = get_post.execute(post_id=post_id)
         return jsonify(post.to_dict())
+
+    @post_blueprint.errorhandler(PostNotFound)
+    def post_not_found(error: PostNotFound):
+        status = 404
+        title = "Post Not Found"
+        response = ErrorResponse(status, title, str(error), request.path)
+        return jsonify(response.to_dict()), status
 
     return post_blueprint

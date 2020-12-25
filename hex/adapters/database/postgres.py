@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Union
 
 from sqlalchemy import (
     create_engine, MetaData, Table, Column, Integer, Text, DateTime, func, select
@@ -25,10 +25,12 @@ class PostgresAdapter(DatabaseInterface):
         engine = create_engine(database_uri)
         self.__connection = engine.connect()
 
-    def get_post(self, post_id: int) -> Post:
+    def get_post(self, post_id: int) -> Union[Post, None]:
         query = posts.select().where(posts.c.id == post_id)
         cursor = self.__connection.execute(query)
         row = cursor.fetchone()
+        if not row:
+            return None
         return Post(**row)
 
     def search_posts(self, start_after: Optional[int] = None,

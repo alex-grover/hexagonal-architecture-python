@@ -7,21 +7,21 @@ from flask import Flask
 from flask.testing import FlaskClient
 from pytest_mock import MockFixture
 
-from hex.domain.actions.get_post import GetPost
+from hex.domain.actions.get_post import GetPost, PostNotFound
 from hex.domain.actions.search_posts import SearchPosts
 from hex.domain.post import Post
-from hex.web.post_blueprint import create_post_blueprint
+from hex.web.blueprints.post_blueprint import create_post_blueprint
 from tests.utils.dates import datetime_to_rfc822_string
 
 
 @pytest.fixture
 def get_post(mocker: MockFixture) -> Mock:
-    return mocker.patch('hex.web.post_blueprint.GetPost')
+    return mocker.patch('hex.web.blueprints.post_blueprint.GetPost')
 
 
 @pytest.fixture
 def search_posts(mocker: MockFixture) -> Mock:
-    return mocker.patch('hex.web.post_blueprint.SearchPosts')
+    return mocker.patch('hex.web.blueprints.post_blueprint.SearchPosts')
 
 
 @pytest.fixture
@@ -80,9 +80,9 @@ class TestPostBlueprint:
     def test_detail_gets_post(self, get_post: Mock, client: FlaskClient, post: Post) -> None:
         get_post.execute.return_value = post
 
-        response = client.get('/posts/20')
+        response = client.get('/posts/1')
 
-        get_post.execute.assert_called_once_with(post_id=20)
+        get_post.execute.assert_called_once_with(post_id=1)
         assert response.json == {
             'id': 1,
             'authorName': 'Alex',
@@ -90,4 +90,18 @@ class TestPostBlueprint:
             'body': 'A longer body for this post',
             'createdAt': datetime_to_rfc822_string(post.created_at),
             'updatedAt': datetime_to_rfc822_string(post.updated_at),
+        }
+
+    def test_not_found_gets_post(self, get_post: Mock, client: FlaskClient, post: Post) -> None:
+        get_post.execute.side_effect = PostNotFound(post.id)
+
+        response = client.get('/posts/1')
+
+        get_post.execute.assert_called_once_with(post_id=1)
+        assert response.json == {
+            "detail": "A post with the id 1 does not exist",
+            "path": "/posts/1",
+            "status": 404,
+            "timestamp": datetime_to_rfc822_string(datetime.now()),
+            "title": "Post Not Found"
         }

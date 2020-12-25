@@ -10,4 +10,13 @@ class GetPost:
         self.__database = database
 
     def execute(self, post_id: int) -> Post:
-        return self.__database.get_post(post_id)
+        post: Post = self.__database.get_post(post_id)
+        if not post:
+            raise PostNotFound(post_id)
+        else:
+            return post
+
+
+class PostNotFound(Exception):
+    def __init__(self, post_id: int):
+        super().__init__("A post with the id {} does not exist".format(post_id))
