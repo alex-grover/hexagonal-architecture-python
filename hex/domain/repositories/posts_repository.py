@@ -4,7 +4,7 @@ from typing import Optional, List
 from hex.domain.post import Post
 
 
-class DatabaseInterface(ABC):
+class PostsRepositoryInterface(ABC):
     @abstractmethod
     def get_post(self, post_id: int) -> Post:
         pass

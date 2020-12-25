@@ -3,12 +3,12 @@ from typing import Optional, List, Tuple
 import inject
 
 from hex.domain.post import Post
-from hex.domain.database_interface import DatabaseInterface
+from hex.domain.repositories.posts_repository import PostsRepositoryInterface
 
 
 class SearchPosts:
     @inject.autoparams()
-    def __init__(self, database: DatabaseInterface):
+    def __init__(self, database: PostsRepositoryInterface):
         self.__database = database
 
     def execute(self, start_after: Optional[int],

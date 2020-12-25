@@ -1,12 +1,12 @@
 import inject
 
 from hex.domain.post import Post
-from hex.domain.database_interface import DatabaseInterface
+from hex.domain.repositories.posts_repository import PostsRepositoryInterface
 
 
 class GetPost:
     @inject.autoparams()
-    def __init__(self, database: DatabaseInterface):
+    def __init__(self, database: PostsRepositoryInterface):
         self.__database = database
 
     def execute(self, post_id: int) -> Post:

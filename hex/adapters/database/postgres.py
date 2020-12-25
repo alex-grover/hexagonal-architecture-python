@@ -5,7 +5,7 @@ from sqlalchemy import (
 )
 
 from hex.domain.post import Post
-from hex.domain.database_interface import DatabaseInterface
+from hex.domain.repositories.posts_repository import PostsRepositoryInterface
 
 metadata = MetaData()
 
@@ -20,7 +20,7 @@ posts = Table('posts', metadata,
                      onupdate=func.now()))
 
 
-class PostgresAdapter(DatabaseInterface):
+class PostsRepository(PostsRepositoryInterface):
     def __init__(self, database_uri: str) -> None:
         engine = create_engine(database_uri)
         self.__connection = engine.connect()

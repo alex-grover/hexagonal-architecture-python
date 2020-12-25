@@ -7,7 +7,7 @@ import pytest
 from hex.domain.actions.get_post import GetPost
 from hex.domain.actions.search_posts import SearchPosts
 from hex.domain.post import Post
-from hex.domain.database_interface import DatabaseInterface
+from hex.domain.repositories.posts_repository import PostsRepositoryInterface
 
 
 @pytest.fixture
@@ -18,7 +18,7 @@ def database() -> Mock:
 @pytest.fixture
 def injector(database: Mock) -> None:
     inject.clear_and_configure(lambda binder: binder
-                               .bind(DatabaseInterface, database))
+                               .bind(PostsRepositoryInterface, database))
 
 
 @pytest.fixture
