@@ -11,6 +11,7 @@ flake8 = "*"
 pytest-mock = "*"
 click = "*"
 pytest-dotenv = "*"
+autopep8 = "*"
 
 [packages]
 flask = "*"
