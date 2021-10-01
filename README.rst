@@ -11,7 +11,7 @@ With Python 3.7+, pipenv, and Postgres installed, run the following:
 .. highlight:: bash
 .. code-block::
 
-    $ git clone https://github.com/ajgrover/hexagonal-architecture-python.git
+    $ git clone https://github.com/alex-grover/hexagonal-architecture-python.git
     $ cd hexagonal-architecture-python
     $ ./setup.sh
     $ pipenv run hex db create
