@@ -4,7 +4,7 @@ setup(
     name='hex',
     version='0.0.0',
     packages=['hex'],
-    url='https://github.com/ajgrover/hexagonal-architecture-python',
+    url='https://github.com/alex-grover/hexagonal-architecture-python',
     license='gpl-3.0',
     author='Alex Grover',
     author_email='hello@alexgrover.me',
